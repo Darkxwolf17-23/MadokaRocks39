@@ -64,6 +64,8 @@ public class RobotContainer {
       m_driverController.a()
       .whileTrue(new RunCommand(()->m_Intake.spin(.1),m_Intake))
       .whileFalse(new RunCommand(()->m_Intake.spin(0),m_Intake));
+      m_driverController.b()
+      .whileTrue(new RunCommand(()->m_Intake.position(1),m_Intake))
   }
 
   /**
