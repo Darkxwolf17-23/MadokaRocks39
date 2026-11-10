@@ -1,8 +1,78 @@
 package frc.robot.subsystems;
 
-public class ArmSubsystem {
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IdConstants;
+
+public class ArmSubsystem extends SubsystemBase{
+    TalonFXConfiguration leftconfig;
+    TalonFXConfiguration rightconfig;
+    TalonFX m_leftarm = new TalonFX(IdConstants.twl);
+    TalonFX m_rightarm = new TalonFX(IdConstants.twr);
+    Follower right_follower;
+      public ArmSubsystem() {
+        // right_follower = new Follower(IdConstants.twl, false);
+        // m_rightarm.setControl(right_follower);
+        // right_follower = new follower()
+            
+
+// Arm motion logic
+       leftconfig = new TalonFXConfiguration();
+        leftconfig.Slot0.kP = 0.1;
+        // "Nobody uses I" apparently, so dont set it.
+        leftconfig.Slot0.kD = 0.0087045;
+        leftconfig.Slot0.kS = 0.034662;
+        leftconfig.Slot0.kV = 2.00919;
+        leftconfig.Slot0.kA = 0.0015569;
+        leftconfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; 
+       
+        rightconfig = new TalonFXConfiguration();
+        rightconfig.Slot0.kP = 0.1;
+        // "Nobody uses I" apparently, so dont set it.
+        rightconfig.Slot0.kD = 0.0087045;
+        rightconfig.Slot0.kS = 0.034662;
+        rightconfig.Slot0.kV = 2.00919;
+        rightconfig.Slot0.kA = 0.0015569;
+        rightconfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; 
+
+        StatusCode status = StatusCode.StatusCodeNotInitialized;
+        for (int i = 0; i < 5; ++i) {
+            status = m_leftarm.getConfigurator().apply(leftconfig);
+            status = m_rightarm.getConfigurator().apply(rightconfig);
+            if (status.isOK())
+                break;
+        }
+        if (!status.isOK()) {
+            System.out.println("Could not configure device. Error: " + status.toString());
+        }
     
+      }
+    
+    public void setarm(int pos ) {
+        System.out.println("arm moves");
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+    m_leftarm.setControl(m_request.withPosition(pos));
+    m_rightarm.setControl(m_request.withPosition(pos));
+    }
+
+    public void setarmL2() {
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+    m_leftarm.setControl(m_request.withPosition(40));
+    m_rightarm.setControl(m_request.withPosition(40));
+    }
+     public void setspeed( double speed){
+        m_leftarm.set(speed);
+        m_rightarm.set(speed);
+     }
 }
+
 /*
 
 
@@ -73,6 +143,8 @@ public class armSubsystem extends SubsystemBase {
 
     private void setControl(ControlRequest control) {
         m_leftarm.setControl(control);
+        m_rightarm.setControl(control);
+        one has to be positive one has to be negative 
     }
 
     // basic arm commands
@@ -135,7 +207,7 @@ public class armSubsystem extends SubsystemBase {
     }
 
     public double getarmSpeed() {
-        return m_leftelevator.get();
+        return m_leftarmk.get();
     }
 
     private final VoltageOut m_sysidControl = new VoltageOut(0);

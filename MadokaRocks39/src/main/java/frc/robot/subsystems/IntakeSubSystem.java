@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
@@ -15,4 +16,6 @@ public class IntakeSubSystem extends SubsystemBase{
      intakerightSparkMax.set(speed); 
       intakeleftSparkMax.set(speed); 
      } 
+
+    
 }

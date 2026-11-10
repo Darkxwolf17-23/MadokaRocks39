@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubSystem;
 import frc.robot.subsystems.IntakeSubSystem;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -21,7 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubSystem m_Drive = new DriveSubSystem();
   private final IntakeSubSystem m_Intake = new IntakeSubSystem();
-
+private final ArmSubsystem m_feed = new ArmSubsystem();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -65,7 +66,15 @@ public class RobotContainer {
       .whileTrue(new RunCommand(()->m_Intake.spin(.1),m_Intake))
       .whileFalse(new RunCommand(()->m_Intake.spin(0),m_Intake));
       m_driverController.b()
-      .whileTrue(new RunCommand(()->m_Intake.position(1),m_Intake))
+      .whileTrue(new RunCommand(()->m_feed.setarmL2(),m_feed));
+      // .whileFalse(new RunCommand(()->m_feed.setarm(0),m_feed));
+      m_driverController.rightTrigger()
+      .whileTrue(new RunCommand(()->m_feed.setspeed(.1),m_feed))
+      .whileFalse(new RunCommand(()->m_feed.setspeed(0),m_feed));
+       m_driverController.leftTrigger()
+      .whileTrue(new RunCommand(()->m_feed.setspeed(-.1),m_feed))
+      .whileFalse(new RunCommand(()->m_feed.setspeed(0),m_feed));
+
   }
 
   /**

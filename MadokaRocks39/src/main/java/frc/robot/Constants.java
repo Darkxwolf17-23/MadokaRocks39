@@ -27,6 +27,6 @@ public final class Constants {
     public static final int pull = 11;
     public static final int shl = 12;
     public static final int shr = 13;
-    public static final int shrr = 14;
-    public static final int sh = 15;}
+    public static final int twl = 14;
+    public static final int twr = 15;}
 }
