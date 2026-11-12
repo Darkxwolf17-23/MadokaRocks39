@@ -68,6 +68,8 @@ private final ArmSubsystem m_feed = new ArmSubsystem();
       m_driverController.b()
       .whileTrue(new RunCommand(()->m_feed.setarmL2(),m_feed));
       // .whileFalse(new RunCommand(()->m_feed.setarm(0),m_feed));
+      m_driverController.y()
+      .whileTrue(new RunCommand(()->m_feed.setarmL3(),m_feed));
       m_driverController.rightTrigger()
       .whileTrue(new RunCommand(()->m_feed.setspeed(.1),m_feed))
       .whileFalse(new RunCommand(()->m_feed.setspeed(0),m_feed));

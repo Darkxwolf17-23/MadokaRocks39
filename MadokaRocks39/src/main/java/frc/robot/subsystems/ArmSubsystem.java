@@ -25,21 +25,23 @@ public class ArmSubsystem extends SubsystemBase{
 
 // Arm motion logic
        leftconfig = new TalonFXConfiguration();
-        leftconfig.Slot0.kP = 0.1;
+        leftconfig.Slot0.kP = .1;
         // "Nobody uses I" apparently, so dont set it.
-        leftconfig.Slot0.kD = 0.0087045;
-        leftconfig.Slot0.kS = 0.034662;
-        leftconfig.Slot0.kV = 2.00919;
-        leftconfig.Slot0.kA = 0.0015569;
+        leftconfig.Slot0.kD = 0.087045;
+        leftconfig.Slot0.kS = 0.284662;
+        leftconfig.Slot0.kV = 1.30919;
+        leftconfig.Slot0.kA = 0.15569;
+        
         leftconfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; 
        
         rightconfig = new TalonFXConfiguration();
-        rightconfig.Slot0.kP = 0.1;
+        rightconfig.Slot0.kP = .1;
         // "Nobody uses I" apparently, so dont set it.
-        rightconfig.Slot0.kD = 0.0087045;
-        rightconfig.Slot0.kS = 0.034662;
-        rightconfig.Slot0.kV = 2.00919;
-        rightconfig.Slot0.kA = 0.0015569;
+        rightconfig.Slot0.kD = 0.087045;
+        rightconfig.Slot0.kS = 0.284662;
+        rightconfig.Slot0.kV = 1.30919;
+        rightconfig.Slot0.kA = 0.15569;
+
         rightconfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; 
 
         StatusCode status = StatusCode.StatusCodeNotInitialized;
@@ -47,6 +49,7 @@ public class ArmSubsystem extends SubsystemBase{
             status = m_leftarm.getConfigurator().apply(leftconfig);
             status = m_rightarm.getConfigurator().apply(rightconfig);
             if (status.isOK())
+                System.out.println("configuered motor");
                 break;
         }
         if (!status.isOK()) {
@@ -55,7 +58,7 @@ public class ArmSubsystem extends SubsystemBase{
     
       }
     
-    public void setarm(int pos ) {
+    public void setarm(Double pos ) {
         System.out.println("arm moves");
     final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
     m_leftarm.setControl(m_request.withPosition(pos));
@@ -63,9 +66,14 @@ public class ArmSubsystem extends SubsystemBase{
     }
 
     public void setarmL2() {
-    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(40);
     m_leftarm.setControl(m_request.withPosition(40));
     m_rightarm.setControl(m_request.withPosition(40));
+    }
+    public void setarmL3() {
+    final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+    m_leftarm.setControl(m_request.withPosition(0));
+    m_rightarm.setControl(m_request.withPosition(0));
     }
      public void setspeed( double speed){
         m_leftarm.set(speed);
